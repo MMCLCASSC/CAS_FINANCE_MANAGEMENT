@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CAS Management System | Post-Audit</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #111827;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .header {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 22px 30px;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+
+    .event-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+
+    .event-card h2 {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .event-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 14px;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .summary-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .summary-card span {
+      display: block;
+      color: #6b7280;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .summary-card strong {
+      display: block;
+      font-size: 22px;
+    }
+
+    .section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      background: #f9fafb;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .empty {
+      text-align: center;
+      color: #6b7280;
+      padding: 30px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: #6b7280;
+    }
+
+    .error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+        .result-banner {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+
+    .result-banner h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .result-banner p {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .result-value {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .result-label {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .variance-positive {
+      color: #047857;
+      font-weight: 600;
+    }
+
+    .variance-negative {
+      color: #b91c1c;
+      font-weight: 600;
+    }
+
+    .variance-neutral {
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .comparison-table td:last-child,
+    .comparison-table th:last-child {
+      text-align: right;
+    }
+
+    .comparison-table td:nth-child(2),
+    .comparison-table td:nth-child(3),
+    .comparison-table td:nth-child(4) {
+      text-align: right;
+    }
+
+    .finding-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .finding {
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+    }
+
+    .finding.success {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #065f46;
+    }
+
+    .finding.warning {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #92400e;
+    }
+
+    .finding.danger {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #991b1b;
+    }
+
+    .event-description {
+      margin-top: 12px;
+      color: #6b7280;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .transaction-income {
+      color: #047857;
+      font-weight: 600;
+    }
+
+    .transaction-expense {
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 900px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .content {
+        padding: 20px;
+      }
+
+      .header {
+        padding: 20px;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <header class="header">
+
+      <div class="header-content">
+
+        <h1>Post-Audit</h1>
+
+        <p>
+          CAS Management System · Event Financial Review
+        </p>
+
+      </div>
+
+    </header>
+
+    <main class="content">
+
+      <div id="pageContent">
+
+        <div class="loading">
+          Loading post-audit...
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <script>
+
+    const API_BASE = "";
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const eventId =
+      params.get("eventId");
+
+
+    function money(value) {
+
+      return `₱${Number(
+        value || 0
+      ).toLocaleString(
+        "en-PH",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }
+      )}`;
+
+    }
+
+
+        function loadPostAudit() {
+
+      const pageContent =
+        document.getElementById(
+          "pageContent"
+        )
+
+      if (!eventId) {
+
+        pageContent.innerHTML = `
+          <div class="error">
+            No event was specified.
+          </div>
+        `
+
+        return
+      }
+
+      Promise.all([
+        fetch(
+          `${API_BASE}/api/events/${eventId}`
+        ),
+        fetch(
+          `${API_BASE}/api/events/${eventId}/pre-audit`
+        ),
+        fetch(
+          `${API_BASE}/api/event-transactions`
+        )
+      ])
+
+        .then(async responses => {
+
+          if (!responses[0].ok) {
+            throw new Error(
+              `Event API returned ${responses[0].status}`
+            )
+          }
+
+          if (!responses[1].ok) {
+            throw new Error(
+              `Pre-Audit API returned ${responses[1].status}`
+            )
+          }
+
+          if (!responses[2].ok) {
+            throw new Error(
+              `Transaction API returned ${responses[2].status}`
+            )
+          }
+
+          const event =
+            await responses[0].json()
+
+          const preAudit =
+            await responses[1].json()
+
+          const transactions =
+            await responses[2].json()
+
+          return {
+            event,
+            preAudit,
+            transactions
+          }
+
+        })
+
+        .then(data => {
+
+          if (
+            data.event.status !== "Completed"
+          ) {
+
+            pageContent.innerHTML = `
+              <div class="error">
+                Post-Audit is only available for completed events.
+              </div>
+            `
+
+            return
+          }
+
+          renderPostAudit(
+            data.event,
+            data.preAudit,
+            data.transactions
+          )
+
+        })
+
+        .catch(error => {
+
+          console.error(
+            "Failed to load Post-Audit:",
+            error
+          )
+
+          pageContent.innerHTML = `
+            <div class="error">
+              Failed to load Post-Audit information.
+              <br>
+              ${error.message}
+            </div>
+          `
+
+        })
+
+    }
+
+
+    function renderPostAudit(
+      event,
+      preAudit,
+      transactions
+    ) {
+
+      document.title =
+        `Post-Audit | ${event.event_name}`
+
+      const eventTransactions =
+        transactions.filter(
+          transaction =>
+            Number(transaction.event_id) ===
+            Number(event.id)
+        )
+
+      const incomeTransactions =
+        eventTransactions.filter(
+          transaction =>
+            transaction.transaction_type ===
+            "Income"
+        )
+
+      const expenseTransactions =
+        eventTransactions.filter(
+          transaction =>
+            transaction.transaction_type ===
+            "Expense"
+        )
+
+      const actualIncome =
+        incomeTransactions.reduce(
+          (total, transaction) =>
+            total +
+            Number(transaction.amount),
+          0
+        )
+
+      const actualExpenses =
+        expenseTransactions.reduce(
+          (total, transaction) =>
+            total +
+            Number(transaction.amount),
+          0
+        )
+
+      const approvedAllocation =
+        Number(
+          event.approved_allocation || 0
+        )
+
+      const expectedIncome =
+        Number(
+          preAudit.totalIncome || 0
+        )
+
+      const expectedExpenses =
+        Number(
+          preAudit.totalExpenses || 0
+        )
+
+      const projectedResult =
+        expectedIncome -
+        expectedExpenses
+
+      const actualResult =
+        actualIncome -
+        actualExpenses
+
+      const incomeVariance =
+        actualIncome -
+        expectedIncome
+
+      const expenseVariance =
+        actualExpenses -
+        expectedExpenses
+
+      const resultVariance =
+        actualResult -
+        projectedResult
+
+      const remainingFund =
+        approvedAllocation -
+        actualExpenses
+
+      const allocationVariance =
+        actualExpenses -
+        approvedAllocation
+
+      let resultTitle =
+        "Event Completed"
+
+      let resultClass =
+        "success"
+
+      if (actualExpenses > approvedAllocation) {
+
+        resultTitle =
+          "Allocation Exceeded"
+
+        resultClass =
+          "danger"
+
+      } else if (
+        actualResult < projectedResult
+      ) {
+
+        resultTitle =
+          "Completed with Variance"
+
+        resultClass =
+          "warning"
+      }
+
+      function varianceClass(
+        value,
+        reverse = false
+      ) {
+
+        if (value === 0) {
+          return "variance-neutral"
+        }
+
+        if (
+          reverse
+            ? value < 0
+            : value > 0
+        ) {
+          return "variance-positive"
+        }
+
+        return "variance-negative"
+      }
+
+      function transactionRows(
+        rows
+      ) {
+
+        if (rows.length === 0) {
+
+          return `
+            <tr>
+              <td
+                colspan="5"
+                class="empty"
+              >
+                No transactions recorded.
+              </td>
+            </tr>
+          `
+        }
+
+        return rows.map(
+          transaction => `
+            <tr>
+
+              <td>
+                ${transaction.description}
+              </td>
+
+              <td>
+                ${transaction.transaction_type}
+              </td>
+
+              <td>
+                ${transaction.transaction_date}
+              </td>
+
+              <td>
+                ${
+                  transaction.mode_of_payment ||
+                  "—"
+                }
+              </td>
+
+              <td
+                class="${
+                  transaction.transaction_type ===
+                  "Income"
+                    ? "transaction-income"
+                    : "transaction-expense"
+                }"
+              >
+                ${money(
+                  transaction.amount
+                )}
+              </td>
+
+            </tr>
+          `
+        ).join("")
+
+      }
+
+      document.getElementById(
+        "pageContent"
+      ).innerHTML = `
+
+        <!-- ================================================= -->
+        <!-- EVENT INFORMATION -->
+        <!-- ================================================= -->
+
+        <div class="event-card">
+
+          <h2>
+            ${event.event_name}
+          </h2>
+
+          <p>
+            Post-event financial audit
+          </p>
+
+          <div class="event-meta">
+
+            <span>
+              Date:
+              ${new Date(
+                event.event_date
+              ).toLocaleDateString(
+                "en-US",
+                {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric"
+                }
+              )}
+            </span>
+
+            <span>
+              Location:
+              ${event.location || "—"}
+            </span>
+
+            <span>
+              Event ID:
+              ${event.id}
+            </span>
+
+            <span class="status">
+              ${event.status}
+            </span>
+
+          </div>
+
+          <div class="event-description">
+
+            ${
+              event.description ||
+              "No event description provided."
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FINAL RESULT -->
+        <!-- ================================================= -->
+
+        <div class="result-banner">
+
+          <h2>
+            Final Event Result
+          </h2>
+
+          <p>
+            Comparison of the event's approved allocation,
+            planned financial result, and actual performance.
+          </p>
+
+          <div
+            class="result-value"
+            style="
+              color: ${
+                resultClass === "success"
+                  ? "#047857"
+                  : resultClass === "warning"
+                    ? "#92400e"
+                    : "#b91c1c"
+              };
+            "
+          >
+            ${resultTitle}
+          </div>
+
+          <div class="result-label">
+            Actual Net Result:
+            ${money(actualResult)}
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- SUMMARY -->
+        <!-- ================================================= -->
+
+        <div class="summary-grid">
+
+          <div class="summary-card">
+
+            <span>
+              Approved Allocation
+            </span>
+
+            <strong>
+              ${money(
+                approvedAllocation
+              )}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <span>
+              Actual Income
+            </span>
+
+            <strong>
+              ${money(
+                actualIncome
+              )}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <span>
+              Actual Expenses
+            </span>
+
+            <strong>
+              ${money(
+                actualExpenses
+              )}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <span>
+              Remaining Allocation
+            </span>
+
+            <strong>
+              ${money(
+                remainingFund
+              )}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- PRE-AUDIT VS POST-AUDIT -->
+        <!-- ================================================= -->
+
+        <div class="section">
+
+          <div class="section-title">
+            Pre-Audit vs Post-Audit
+          </div>
+
+          <div class="table-container">
+
+            <table
+              class="comparison-table"
+            >
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Financial Item
+                  </th>
+
+                  <th>
+                    Pre-Audit
+                  </th>
+
+                  <th>
+                    Actual
+                  </th>
+
+                  <th>
+                    Variance
+                  </th>
+
+                  <th>
+                    Assessment
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                <tr>
+
+                  <td>
+                    Income
+                  </td>
+
+                  <td>
+                    ${money(
+                      expectedIncome
+                    )}
+                  </td>
+
+                  <td>
+                    ${money(
+                      actualIncome
+                    )}
+                  </td>
+
+                  <td
+                    class="${
+                      varianceClass(
+                        incomeVariance
+                      )
+                    }"
+                  >
+                    ${money(
+                      incomeVariance
+                    )}
+                  </td>
+
+                  <td>
+
+                    ${
+                      incomeVariance > 0
+                        ? "Above expectation"
+                        : incomeVariance < 0
+                          ? "Below expectation"
+                          : "Matched expectation"
+                    }
+
+                  </td>
+
+                </tr>
+
+
+                <tr>
+
+                  <td>
+                    Expenses
+                  </td>
+
+                  <td>
+                    ${money(
+                      expectedExpenses
+                    )}
+                  </td>
+
+                  <td>
+                    ${money(
+                      actualExpenses
+                    )}
+                  </td>
+
+                  <td
+                    class="${
+                      varianceClass(
+                        expenseVariance,
+                        true
+                      )
+                    }"
+                  >
+                    ${money(
+                      expenseVariance
+                    )}
+                  </td>
+
+                  <td>
+
+                    ${
+                      expenseVariance < 0
+                        ? "Below budget"
+                        : expenseVariance > 0
+                          ? "Above budget"
+                          : "Matched budget"
+                    }
+
+                  </td>
+
+                </tr>
+
+
+                <tr>
+
+                  <td>
+                    Net Result
+                  </td>
+
+                  <td>
+                    ${money(
+                      projectedResult
+                    )}
+                  </td>
+
+                  <td>
+                    ${money(
+                      actualResult
+                    )}
+                  </td>
+
+                  <td
+                    class="${
+                      varianceClass(
+                        resultVariance
+                      )
+                    }"
+                  >
+                    ${money(
+                      resultVariance
+                    )}
+                  </td>
+
+                  <td>
+
+                    ${
+                      resultVariance > 0
+                        ? "Better than projected"
+                        : resultVariance < 0
+                          ? "Below projection"
+                          : "Matched projection"
+                    }
+
+                  </td>
+
+                </tr>
+
+
+                <tr>
+
+                  <td>
+                    Approved Allocation
+                  </td>
+
+                  <td>
+                    ${money(
+                      approvedAllocation
+                    )}
+                  </td>
+
+                  <td>
+                    ${money(
+                      actualExpenses
+                    )}
+                  </td>
+
+                  <td
+                    class="${
+                      varianceClass(
+                        allocationVariance,
+                        true
+                      )
+                    }"
+                  >
+                    ${money(
+                      allocationVariance
+                    )}
+                  </td>
+
+                  <td>
+
+                    ${
+                      allocationVariance <= 0
+                        ? "Within allocation"
+                        : "Allocation exceeded"
+                    }
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- EXPECTED INCOME VS ACTUAL -->
+        <!-- ================================================= -->
+
+        <div class="section">
+
+          <div class="section-title">
+            Income Comparison
+          </div>
+
+          <div class="table-container">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Income Source
+                  </th>
+
+                  <th>
+                    Pre-Audit Expected
+                  </th>
+
+                  <th>
+                    Actual Income
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                ${
+                  preAudit.income.length === 0
+                    ? `
+                      <tr>
+                        <td
+                          colspan="3"
+                          class="empty"
+                        >
+                          No expected income was recorded during Pre-Audit.
+                        </td>
+                      </tr>
+                    `
+                    : preAudit.income.map(
+                        item => `
+                          <tr>
+
+                            <td>
+                              ${item.description}
+                            </td>
+
+                            <td>
+                              ${money(
+                                item.amount
+                              )}
+                            </td>
+
+                            <td>
+                              —
+                            </td>
+
+                          </tr>
+                        `
+                      ).join("")
+                }
+
+                <tr>
+
+                  <td>
+                    <strong>
+                      Total Expected Income
+                    </strong>
+                  </td>
+
+                  <td>
+                    <strong>
+                      ${money(
+                        expectedIncome
+                      )}
+                    </strong>
+                  </td>
+
+                  <td>
+                    <strong>
+                      ${money(
+                        actualIncome
+                      )}
+                    </strong>
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- EXPECTED EXPENSES VS ACTUAL -->
+        <!-- ================================================= -->
+
+        <div class="section">
+
+          <div class="section-title">
+            Expense Comparison
+          </div>
+
+          <div class="table-container">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Expense Item
+                  </th>
+
+                  <th>
+                    Pre-Audit Expected
+                  </th>
+
+                  <th>
+                    Actual Expenses
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                ${
+                  preAudit.expenses.length === 0
+                    ? `
+                      <tr>
+                        <td
+                          colspan="3"
+                          class="empty"
+                        >
+                          No expected expenses were recorded during Pre-Audit.
+                        </td>
+                      </tr>
+                    `
+                    : preAudit.expenses.map(
+                        item => `
+                          <tr>
+
+                            <td>
+                              ${item.description}
+                            </td>
+
+                            <td>
+                              ${money(
+                                item.amount
+                              )}
+                            </td>
+
+                            <td>
+                              —
+                            </td>
+
+                          </tr>
+                        `
+                      ).join("")
+                }
+
+                <tr>
+
+                  <td>
+                    <strong>
+                      Total Expected Expenses
+                    </strong>
+                  </td>
+
+                  <td>
+                    <strong>
+                      ${money(
+                        expectedExpenses
+                      )}
+                    </strong>
+                  </td>
+
+                  <td>
+                    <strong>
+                      ${money(
+                        actualExpenses
+                      )}
+                    </strong>
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- ACTUAL EVENT TRANSACTIONS -->
+        <!-- ================================================= -->
+
+        <div class="section">
+
+          <div class="section-title">
+            Actual Event Transactions
+          </div>
+
+          <div class="table-container">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Description
+                  </th>
+
+                  <th>
+                    Type
+                  </th>
+
+                  <th>
+                    Date
+                  </th>
+
+                  <th>
+                    Mode of Payment
+                  </th>
+
+                  <th>
+                    Amount
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                ${transactionRows(
+                  eventTransactions
+                )}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- AUDIT FINDINGS -->
+        <!-- ================================================= -->
+
+        <div class="section">
+
+          <div class="section-title">
+            Audit Findings
+          </div>
+
+          <div class="finding-list">
+
+            <div class="finding success">
+
+              Event status is Completed and is eligible for
+              final Post-Audit assessment.
+
+            </div>
+
+
+            <div
+              class="finding ${
+                incomeVariance >= 0
+                  ? "success"
+                  : "warning"
+              }"
+            >
+
+              ${
+                incomeVariance > 0
+                  ? `Actual income exceeded the Pre-Audit expectation by ${money(
+                      incomeVariance
+                    )}.`
+                  : incomeVariance < 0
+                    ? `Actual income was below the Pre-Audit expectation by ${money(
+                        Math.abs(
+                          incomeVariance
+                        )
+                      )}.`
+                    : "Actual income matched the Pre-Audit expectation."
+              }
+
+            </div>
+
+
+            <div
+              class="finding ${
+                expenseVariance <= 0
+                  ? "success"
+                  : "warning"
+              }"
+            >
+
+              ${
+                expenseVariance > 0
+                  ? `Actual expenses exceeded the Pre-Audit expectation by ${money(
+                      expenseVariance
+                    )}.`
+                  : expenseVariance < 0
+                    ? `Actual expenses were ${money(
+                        Math.abs(
+                          expenseVariance
+                        )
+                      )} below the Pre-Audit expectation.`
+                    : "Actual expenses matched the Pre-Audit expectation."
+              }
+
+            </div>
+
+
+            <div
+              class="finding ${
+                actualExpenses <= approvedAllocation
+                  ? "success"
+                  : "danger"
+              }"
+            >
+
+              ${
+                actualExpenses <= approvedAllocation
+                  ? `The event remained within its approved allocation, leaving ${money(
+                      remainingFund
+                    )} unspent.`
+                  : `The event exceeded its approved allocation by ${money(
+                      Math.abs(
+                        remainingFund
+                      )
+                    )}.`
+              }
+
+            </div>
+
+
+            <div
+              class="finding ${
+                resultVariance >= 0
+                  ? "success"
+                  : "warning"
+              }"
+            >
+
+              ${
+                resultVariance > 0
+                  ? `The actual net result was ${money(
+                      resultVariance
+                    )} better than the Pre-Audit projection.`
+                  : resultVariance < 0
+                    ? `The actual net result was ${money(
+                        Math.abs(
+                          resultVariance
+                        )
+                      )} below the Pre-Audit projection.`
+                    : "The actual net result matched the Pre-Audit projection."
+              }
+
+            </div>
+
+          </div>
+
+        </div>
+
+      `
+
+    }
+
+    loadPostAudit();
+
+  </script>
+
+</body>
+
+</html>

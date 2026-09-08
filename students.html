@@ -1,0 +1,351 @@
+<div class="module-page">
+
+  <div class="module-header">
+    
+    <div class="students-actions">
+      <button
+        id="addStudentButton"
+        class="primary-button"
+        type="button"
+      >
+        + Add Student
+      </button>
+
+      <button
+        id="enrollStudentButton"
+        class="secondary-button"
+        type="button"
+      >
+        + Enroll Student
+      </button>
+    </div>    
+  </div>
+
+    <div class="student-search-bar">
+
+    <input
+      type="text"
+      id="studentGeneralSearch"
+      placeholder="Search students, student number, program, school year..."
+    >
+
+  </div>
+
+  
+  <div class="module-card">
+
+    <div class="section-header">
+      <h3>Student List</h3>
+      <p>Students currently registered in the system.</p>
+    </div>
+
+    <div class="table-container student-list-table">
+      
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Student Number</th>
+            <th>Name</th>
+            <th>Program</th>
+            <th>Year Level</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="studentsTableBody">
+          <tr>
+            <td colspan="6">Loading students...</td>
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+    <div
+    id="enrollmentModal"
+    class="modal-overlay"
+  >
+      <div class="modal">
+
+        <div class="modal-header">
+
+          <div>
+            <h2>Enroll Student</h2>
+            <p>
+              Select a student and enter enrollment information.
+            </p>
+          </div>
+
+          <button
+            id="closeEnrollmentModal"
+            class="modal-close"
+            type="button"
+          >
+            &times;
+          </button>
+
+        </div>
+
+        <form id="enrollmentForm">
+
+          <div class="form-group">
+
+            <label for="enrollmentStudentSearch">
+              Student
+            </label>
+
+            <div class="student-selector">
+
+              <input
+                type="text"
+                id="enrollmentStudentSearch"
+                placeholder="Search student number or name..."
+                autocomplete="off"
+              >
+
+              <input
+                type="hidden"
+                id="enrollmentStudent"
+              >
+
+              <div
+                id="enrollmentStudentResults"
+                class="student-selector-results"
+              ></div>
+
+            </div>
+
+          </div>
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label for="enrollmentSchoolYear">
+                School Year
+              </label>
+
+              <select id="enrollmentSchoolYear" required>
+                <option value="">Select school year</option>
+                <option value="2025-2026">2025-2026</option>
+                <option value="2026-2027">2026-2027</option>
+                <option value="2027-2028">2027-2028</option>
+              </select>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="enrollmentYearLevel">
+                Year Level
+              </label>
+
+              <select id="enrollmentYearLevel" required>
+                <option value="">Select year level</option>
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3">3rd Year</option>
+                <option value="4">4th Year</option>
+              </select>
+
+            </div>
+
+          </div>
+
+          <div class="modal-actions">
+
+            <button
+              id="cancelEnrollmentButton"
+              class="secondary-button"
+              type="button"
+            >
+              Cancel
+            </button>
+
+            <button
+              class="primary-button"
+              type="submit"
+            >
+              Enroll Student
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  
+<div class="module-card">
+
+  <div class="section-header">
+    <h3>Enrollment Records</h3>
+    <p>View student enrollment history.</p>
+  </div>
+
+  <div class="table-container enrollment-list-table">
+    
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Student Number</th>
+          <th>Student Name</th>
+          <th>School Year</th>
+          <th>Year Level</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody id="enrollmentsTableBody">
+
+        <tr>
+          <td colspan="5">
+            Loading enrollments...
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+</div>
+
+<!-- STUDENT MODAL -->
+
+<div class="modal-overlay" id="studentModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+        <h2 id="studentModalTitle">Add Student</h2>
+        <p id="studentModalDescription">
+          Enter the student's information.
+        </p>
+      </div>
+
+      <button class="modal-close" id="closeStudentModal">
+        ×
+      </button>
+
+    </div>
+
+    <form id="studentForm">
+
+      <div class="form-group">
+        <label for="studentNumber">Student Number</label>
+
+        <input
+          type="text"
+          id="studentNumber"
+          required
+        >
+      </div>
+
+      <div class="form-row">
+
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+
+          <input
+            type="text"
+            id="firstName"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+
+          <input
+            type="text"
+            id="lastName"
+            required
+          >
+        </div>
+
+      </div>
+
+      <div class="form-row">
+
+        <div class="form-group">
+          <label for="program">Program</label>
+
+          <input
+            type="text"
+            id="program"
+          >
+        </div>
+
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-header">
+          <h3>Enrollment Information</h3>
+          <p>Set the student's initial enrollment.</p>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="studentSchoolYear">School Year</label>
+
+            <select id="studentSchoolYear">
+              <option value="">Select school year</option>
+              <option value="2025-2026">2025-2026</option>
+              <option value="2026-2027">2026-2027</option>
+              <option value="2027-2028">2027-2028</option>
+              <option value="2028-2029">2028-2029</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="studentEnrollmentYearLevel">
+              Year Level
+            </label>
+
+            <select id="studentEnrollmentYearLevel">
+              <option value="">Select year level</option>
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3">3rd Year</option>
+              <option value="4">4th Year</option>
+              <option value="5">5th Year</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          id="cancelStudentButton"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="primary-button"
+        >
+          Save Student
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

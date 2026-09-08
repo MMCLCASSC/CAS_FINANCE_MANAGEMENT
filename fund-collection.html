@@ -1,0 +1,433 @@
+<div class="page-header">
+
+</div>
+
+
+<!-- COLLECTION OVERVIEW -->
+
+<div class="dashboard-grid">
+
+  <div class="dashboard-card">
+
+    <span class="dashboard-card-label">
+      Expected Collection
+    </span>
+
+    <strong id="expectedCollection">
+      ₱0.00
+    </strong>
+
+  </div>
+
+
+  <div class="dashboard-card">
+
+    <span class="dashboard-card-label">
+      Total Collected
+    </span>
+
+    <strong id="totalCollected">
+      ₱0.00
+    </strong>
+
+  </div>
+
+
+  <div class="dashboard-card">
+
+    <span class="dashboard-card-label">
+      Remaining Collection
+    </span>
+
+    <strong id="remainingCollection">
+      ₱0.00
+    </strong>
+
+  </div>
+
+</div>
+
+<div class="collection-progress-card">
+
+  <div class="collection-progress-header">
+
+    <div>
+      <strong>Collection Progress</strong>
+
+      <span id="collectionRate">
+        0%
+      </span>
+    </div>
+
+  </div>
+
+  <div class="collection-progress-track">
+
+    <div
+      id="collectionProgressBar"
+      class="collection-progress-fill"
+      style="width: 0%;"
+    ></div>
+
+  </div>
+
+</div>
+
+<!-- PAYMENT RECORDS -->
+
+<div class="module-card">
+
+  <div class="section-header">
+
+    <div>
+      <h3>Payment Records</h3>
+
+      <p>
+        Records of student fund payments.
+      </p>
+    </div>
+
+    <button
+      id="recordPaymentButton"
+      class="primary-button"
+    >
+      + Record Payment
+    </button>
+
+  </div>
+
+  <div class="student-search-bar">
+
+    <input
+      type="text"
+      id="paymentSearch"
+      placeholder="Search student, number, school year..."
+    >
+
+  </div>
+
+  <div class="table-container payment-list-table">
+
+    <table class="data-table">
+
+      <thead>
+
+        <tr>
+
+          <th>Student Number</th>
+          <th>Student Name</th>
+          <th>School Year</th>
+          <th>Term</th>
+          <th>Amount</th>
+          <th>Payment Date</th>
+          <th>Action</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="paymentsTableBody">
+
+        <tr>
+          <td colspan="7">
+            Loading payment records...
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+
+<!-- RECORD PAYMENT MODAL -->
+
+<div
+  id="paymentModal"
+  class="modal-overlay"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+          Record Payment
+        </h2>
+
+        <p>
+          Record a student's fund payment.
+        </p>
+
+      </div>
+
+      <button
+        id="closePaymentModal"
+        class="modal-close"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="paymentForm">
+
+      <!-- STUDENT -->
+
+      <div class="form-group">
+
+        <label for="paymentStudentSearch">
+          Student
+        </label>
+
+        <div class="student-selector">
+
+          <input
+            type="text"
+            id="paymentStudentSearch"
+            placeholder="Search student number or name..."
+            autocomplete="off"
+            required
+          >
+
+          <input
+            type="hidden"
+            id="paymentStudent"
+          >
+
+          <div
+            id="paymentStudentResults"
+            class="student-selector-results"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- SCHOOL YEAR -->
+
+      <div class="form-group">
+
+        <label for="paymentSchoolYear">
+          School Year
+        </label>
+
+        <select
+          id="paymentSchoolYear"
+          required
+        >
+
+          <option value="">
+            Select school year
+          </option>
+
+          <option value="2025-2026">
+            2025-2026
+          </option>
+
+          <option value="2026-2027">
+            2026-2027
+          </option>
+
+          <option value="2027-2028">
+            2027-2028
+          </option>
+
+          <option value="2028-2029">
+            2028-2029
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+        <label for="paymentModeOfPayment">
+          Mode of Payment
+        </label>
+
+        <select id="paymentModeOfPayment" required>
+          <option value="">Select mode of payment</option>
+          <option value="Cash">Cash</option>
+          <option value="GCash">GCash</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- TERM -->
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+            <div class="form-group">
+              <label>Terms</label>
+
+              <div class="payment-terms">
+
+                <label class="payment-term-option" data-term="1">
+                  <input
+                    type="checkbox"
+                    name="paymentTerms"
+                    value="1"
+                  >
+                  <span>Term 1</span>
+                  <strong>₱50.00</strong>
+                </label>
+
+                <label class="payment-term-option" data-term="2">
+                  <input
+                    type="checkbox"
+                    name="paymentTerms"
+                    value="2"
+                  >
+                  <span>Term 2</span>
+                  <strong>₱50.00</strong>
+                </label>
+
+                <label class="payment-term-option" data-term="3">
+                  <input
+                    type="checkbox"
+                    name="paymentTerms"
+                    value="3"
+                  >
+                  <span>Term 3</span>
+                  <strong>₱50.00</strong>
+                </label>
+
+              </div>
+
+              <div class="payment-total">
+                <span>Total Amount</span>
+                <strong id="paymentTotal">₱0.00</strong>
+              </div>
+            </div>
+
+        </div>
+
+
+        <!-- AMOUNT -->
+
+        <div class="form-group">
+
+          <label for="paymentAmount">
+            Amount
+          </label>
+
+          <input
+            type="text"
+            id="paymentAmount"
+            value="₱50.00"
+            readonly
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          id="cancelPaymentButton"
+          class="secondary-button"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="primary-button"
+        >
+          Record Payment
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<div class="module-section">
+
+    <div class="section-header">
+
+      <div>
+        <h3>Collection Status</h3>
+
+        <p>
+          Payment status of students by school year.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="student-search-bar">
+
+      <input
+        type="text"
+        id="collectionStatusSearch"
+        placeholder="Search student, number, school year, status..."
+      >
+
+    </div>
+
+    <div class="table-container collection-status-table">
+
+      <table class="data-table">
+
+        <thead>
+
+          <tr>
+
+            <th>Student Number</th>
+
+            <th>Student Name</th>
+
+            <th>School Year</th>
+
+            <th>Expected</th>
+
+            <th>Total Paid</th>
+
+            <th>Remaining</th>
+
+            <th>Status</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="collectionStatusTableBody">
+
+          <tr>
+
+            <td colspan="7">
+              Loading collection status...
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+</div>

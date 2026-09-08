@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CAS Management System</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div id="app" class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="sidebar-header">
+        <h2>CAS</h2>
+        <p>Management System</p>
+      </div>
+
+      <nav class="sidebar-nav">
+
+        <button class="nav-item active">
+          <span>⌂</span>
+          <span>Dashboard</span>
+        </button>
+
+        <button class="nav-item">
+          <span>👥</span>
+          <span>Students</span>
+        </button>
+
+        <button class="nav-item">
+          <span>💰</span>
+          <span>Fund Collection</span>
+        </button>
+
+
+        <button class="nav-item">
+          <span>📅</span>
+          <span>Events</span>
+        </button>
+
+
+      </nav>
+
+      <div class="sidebar-footer">
+
+        <button class="nav-item">
+          <span>⚙</span>
+          <span>Settings</span>
+        </button>
+
+        <button
+          class="nav-item"
+          id="logoutButton"
+        >
+          <span>↪</span>
+          <span>Logout</span>
+        </button>
+
+      </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+
+        <div>
+          <h1 id= "pageTitle">Dashboard</h1>
+          <p id= "pageDescription">CAS Management System</p>
+        </div>
+
+        <div class="topbar-user">
+
+          <div class="user-avatar">
+            C
+          </div>
+
+          <div class="user-info">
+            <strong>CAS Administrator</strong>
+            <span>Administrator</span>
+          </div>
+
+        </div>
+
+      </header>
+
+      <!-- CONTENT -->
+  <section class="content">
+    <div id="pageContent">
+
+      <div class="welcome-section">
+
+        <h2>Welcome to CAS Management System</h2>
+
+        <p>
+          Manage students, enrollments, fund collection,
+          obligations, and events in one place.
+        </p>
+
+      </div>
+
+      <div class="dashboard-grid">
+
+        </div>
+
+      </div>
+
+
+    </div>
+  </section>
+    </main>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+
+  <div id="successToast" class="success-toast">
+  <div class="success-toast-icon">✓</div>
+
+  <div class="success-toast-content">
+    <strong id="successToastTitle">
+      Student Added Successfully
+    </strong>
+
+    <span id="successToastMessage">
+      The student has been added to the system.
+    </span>
+  </div>
+</div>
+  
+</body>
+
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>CAS Management System | Events</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- AVAILABLE FUND -->
+
+  <div class="dashboard-grid">
+
+    <div class="module-card">
+
+      <h3>Available Fund</h3>
+
+      <div
+        class="module-card-value"
+        id="availableFund"
+      >
+        ₱0.00
+      </div>
+
+      <p>
+        Current available fund
+      </p>
+
+      <button
+        type="button"
+        class="primary-button"
+        id="recordTransactionButton"
+        style="
+          margin-top: 14px;
+          width: 100%;
+        "
+      >
+        + Record Transaction
+      </button>
+
+    </div>
+
+    <div class="module-card">
+
+      <h3>Allocated Fund</h3>
+
+      <div
+        class="module-card-value"
+        id="allocatedFund"
+      >
+        ₱0.00
+      </div>
+
+      <p>
+        Expected income allocated to planned events
+      </p>
+
+    </div>
+
+
+    <div class="module-card">
+
+      <h3>Remaining Fund</h3>
+
+      <div
+        class="module-card-value"
+        id="remainingFund"
+      >
+        ₱0.00
+      </div>
+
+      <p>
+        Available fund after allocations
+      </p>
+
+    </div>
+
+  </div>
+
+
+<div class="module-section">
+
+  <div
+    style="
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+    "
+  >
+
+    <a
+      href="event-transactions.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      style="
+        color: #2563eb;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+      "
+    >
+      View Full Transaction History →
+    </a>
+
+  </div>
+
+  <div class="module-section-header">
+
+    <div>
+    </div>
+
+  </div>
+  <div class="module-section-header">
+
+  </div>
+
+  <div class="module-grid">
+
+    <div class="module-card">
+
+      <h3>Total Income</h3>
+
+      <div
+        class="module-card-value"
+        id="todayIncome"
+      >
+        ₱0.00
+      </div>
+
+      <p>
+        Total income recorded
+      </p>
+
+    </div>
+
+
+    <div class="module-card">
+
+      <h3>Total Expenses</h3>
+
+      <div
+        class="module-card-value"
+        id="todayExpenses"
+      >
+        ₱0.00
+      </div>
+
+      <p>
+        Total expenses recorded
+      </p>
+
+    </div>
+
+
+    <div class="module-card">
+
+      <h3>Net Movement</h3>
+
+      <div
+        class="module-card-value"
+        id="todayNetMovement"
+      >
+        ₱0.00
+      </div>
+
+      <p>
+        Income minus expenses
+      </p>
+
+    </div>
+
+  </div>
+
+      <div style="padding-top: 20px;">
+      <h3>Today's Transactions</h3>
+    </div>
+
+
+
+  <div
+    class="table-container"
+    style="margin-top: 20px;"
+  >
+
+    <table class="data-table">
+
+      <thead>
+
+        <tr>
+
+          <th>Type</th>
+          <th>Description</th>
+          <th>Event</th>
+          <th>Amount</th>
+          <th>Mode</th>
+          <th>Reference</th>
+
+          <th>Action</th>
+        </tr>
+
+      </thead>
+
+      <tbody id="todayTransactionsTableBody">
+
+        <tr>
+
+          <td colspan="7">
+            No transactions recorded today.
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+  <!-- EVENTS -->
+
+  <section class="module-section">
+
+    <div class="module-section-header">
+
+      <button
+        type="button"
+        class="primary-button"
+        id="addEventButton"
+      >
+        + Add Event
+      </button>
+
+    </div>
+
+
+    <div class="table-container">
+
+      <table class="data-table">
+
+        <thead>
+
+          <tr>
+            <th>Event Name</th>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="eventsTableBody">
+
+          <tr>
+            <td colspan="5">
+              Loading events...
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- ADD EVENT MODAL -->
+
+  <div
+    class="modal-overlay"
+    id="eventModal"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>Add Event</h2>
+
+          <p>
+            Create a new CAS event.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="modal-close"
+          id="closeEventModal"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form id="eventForm">
+
+        <div class="form-group">
+
+          <label for="eventName">
+            Event Name
+          </label>
+
+          <input
+            type="text"
+            id="eventName"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label for="eventDate">
+              Event Date
+            </label>
+
+            <input
+              type="date"
+              id="eventDate"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="eventLocation">
+              Location
+            </label>
+
+            <input
+              type="text"
+              id="eventLocation"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="eventDescription">
+            Description
+          </label>
+
+          <input
+            type="text"
+            id="eventDescription"
+          >
+
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            id="cancelEventButton"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="primary-button"
+          >
+            Save Event
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- EVENT TRANSACTION MODAL -->
+
+  <div
+    class="modal-overlay"
+    id="transactionModal"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>Record Transaction</h2>
+
+          <p>
+            Record an actual income or expense.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="modal-close"
+          id="closeTransactionModal"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form id="transactionForm" novalidate>
+
+        <div class="form-group">
+
+          <label for="transactionType">
+            Transaction Type
+          </label>
+
+          <select
+            id="transactionType"
+            required
+          >
+
+            <option value="">
+              Select transaction type
+            </option>
+
+            <option value="Income">
+              Income
+            </option>
+
+            <option value="Expense">
+              Expense
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="transactionEvent">
+            Event
+          </label>
+
+          <select id="transactionEvent">
+
+            <option value="">
+              General Fund Transaction
+            </option>
+
+          </select>
+
+          <small
+            style="
+              color: #6b7280;
+              font-size: 12px;
+            "
+          >
+            Select an event if this transaction is related to a specific event.
+          </small>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="transactionDescription">
+            Description
+          </label>
+
+          <input
+            type="text"
+            id="transactionDescription"
+            placeholder="e.g. Venue payment"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label for="transactionAmount">
+              Amount
+            </label>
+
+            <input
+              type="number"
+              id="transactionAmount"
+              min="0.01"
+              step="0.01"
+              placeholder="0.00"
+              required
+            >
+
+            <small
+              id="transactionSpendingLimit"
+              style="
+                display: none;
+                margin-top: 5px;
+                color: #6b7280;
+                font-size: 12px;
+              "
+            >
+              Available to spend:
+              <strong id="transactionAvailableAmount">
+                ₱0.00
+              </strong>
+            </small>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="transactionDate">
+              Transaction Date
+            </label>
+
+            <input
+              type="date"
+              id="transactionDate"
+              required
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label for="transactionMode">
+              Mode of Payment
+            </label>
+
+            <select id="transactionMode">
+
+              <option value="Cash">
+                Cash
+              </option>
+
+              <option value="Bank Transfer">
+                Bank Transfer
+              </option>
+
+              <option value="GCash">
+                GCash
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="transactionReference">
+              Reference Number
+            </label>
+
+            <input
+              type="text"
+              id="transactionReference"
+              placeholder="Optional"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            id="cancelTransactionButton"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="primary-button"
+          >
+            Save Transaction
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+  <!-- PRE-AUDIT MODAL -->
+
+  <div
+    class="modal-overlay"
+    id="preAuditModal"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>Pre-Audit</h2>
+
+          <p id="preAuditEventName">
+            Event Financial Assessment
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="modal-close"
+          id="closePreAuditModal"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+        <div
+          id="preAuditContent"
+          style="padding: 22px;"
+        >
+
+          <div
+            id="preAuditFinancialSummary"
+            style="margin-bottom: 24px;"
+          >
+          </div>
+
+
+          <!-- EXPECTED INCOME -->
+
+          <div style="margin-bottom: 28px;">
+
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+              "
+            >
+
+              <h3 style="font-size: 16px;">
+                Expected Income
+              </h3>
+
+              <button
+                type="button"
+                class="primary-button"
+                id="addExpectedIncomeButton"
+              >
+                + Add Income
+              </button>
+
+            </div>
+
+
+            <div
+              id="expectedIncomeForm"
+              style="display: none; margin-bottom: 15px;"
+            >
+
+              <div class="form-row">
+
+                <div class="form-group">
+
+                  <label for="expectedIncomeDescription">
+                    Description
+                  </label>
+
+                  <input
+                    type="text"
+                    id="expectedIncomeDescription"
+                    placeholder="e.g. Registration Fee"
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="expectedIncomeAmount">
+                    Amount
+                  </label>
+
+                  <input
+                    type="number"
+                    id="expectedIncomeAmount"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                  >
+
+                </div>
+
+              </div>
+
+
+              <div class="modal-actions">
+
+                <button
+                  type="button"
+                  class="secondary-button"
+                  id="cancelExpectedIncomeButton"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  class="primary-button"
+                  id="saveExpectedIncomeButton"
+                >
+                  Save Income
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <div
+              id="expectedIncomeList"
+            >
+            </div>
+
+          </div>
+
+
+          <!-- EXPECTED EXPENSES -->
+
+          <div>
+
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+              "
+            >
+
+              <h3 style="font-size: 16px;">
+                Expected Expenses
+              </h3>
+
+              <button
+                type="button"
+                class="primary-button"
+                id="addExpectedExpenseButton"
+              >
+                + Add Expense
+              </button>
+
+            </div>
+
+
+            <div
+              id="expectedExpenseForm"
+              style="display: none; margin-bottom: 15px;"
+            >
+
+              <div class="form-row">
+
+                <div class="form-group">
+
+                  <label for="expectedExpenseDescription">
+                    Description
+                  </label>
+
+                  <input
+                    type="text"
+                    id="expectedExpenseDescription"
+                    placeholder="e.g. Venue Rental"
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="expectedExpenseAmount">
+                    Amount
+                  </label>
+
+                  <input
+                    type="number"
+                    id="expectedExpenseAmount"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                  >
+
+                </div>
+
+              </div>
+
+
+              <div class="modal-actions">
+
+                <button
+                  type="button"
+                  class="secondary-button"
+                  id="cancelExpectedExpenseButton"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  class="primary-button"
+                  id="saveExpectedExpenseButton"
+                >
+                  Save Expense
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <div
+              id="expectedExpenseList"
+            >
+            </div>
+
+          </div>
+
+        </div>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
+
