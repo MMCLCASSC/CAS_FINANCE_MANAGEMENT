@@ -654,9 +654,9 @@ if (
           WHERE id = $5
           RETURNING *
         `, [
-          student.studentNumber,
-          student.firstName,
-          student.lastName,
+          student.student_number,
+          student.first_name,
+          student.last_name,
           student.program,
           studentId
         ])
@@ -3866,6 +3866,7 @@ fs.readFile(
 
 server.listen(
   process.env.PORT || 3000,
+  "0.0.0.0",
   () => {
     console.log(
       `Server running on port ${process.env.PORT || 3000}`
